@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Enadla_Counterfil_App.Views.MainPage"
+             Title="Enadla Talonario"
+             xmlns:viewModels="clr-namespace:Enadla_Counterfil_App.ViewsModels">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Label FontAttributes="Bold" FontSize="32"
+                   HorizontalOptions="Center" Margin="0,25,0,0" Text="Enadla Talonario"/>
+
+            <Label Margin=" 0,40,0,0" HorizontalOptions="Center" 
+                Text="Ganancias del dia"/>
+            <Frame HorizontalOptions="Center" BackgroundColor="AliceBlue">
+                <Label FontSize="32" TextColor="{Binding Path=CorrectColorProfit, Mode=OneWay}"
+                       Text="{Binding Path=ProfitOfTheDay, Mode=OneWay, StringFormat='{0:C}'}"/>
+            </Frame>
+            <Button Clicked="Button_Clicked" Text="Registrar gastos rapidos"/>
+            <Button Text="Ver todos los gastos"/>
+
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <Label HorizontalOptions="Center" Text="Acciones predeterminadas"/>
+                <Button Text="Ventas"/>
+                <Button Text="Reponer"/>
+                <Button Text="Lista de compra"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
