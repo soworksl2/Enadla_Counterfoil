@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Enadla_Counterfil_App.Views.AddOrUpdateProducts"
+             xmlns:sfNumericEntry="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
+             Title="{Binding Path=CorrectTitle, Mode=OneTime}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="ID:"/>
+            <Entry IsEnabled="false" Text="{Binding Path=CurrentProduct.ProductId, Mode=OneWay}"/>
+            <Label Text="Nombre:"/>
+            <Entry Text="{Binding Path=CurrentProduct.Name, Mode=TwoWay}"/>
+            <Label Text="Alias:"/>
+            <Entry Text="{Binding Path=CurrentProduct.Alias, Mode=TwoWay}"/>
+            <Label Text="Costo de mercado:"/>
+            <sfNumericEntry:SfNumericTextBox Value="{Binding Path=CurrentProduct.MarketCost, Mode=TwoWay}" FormatString="c"/>
+            
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Button Text="Aceptar y continuar" Command="{Binding Path=CmdClickOnAcceptAndContinue, Mode=OneTime}"/>
+                <Button Text="Aceptar" Command="{Binding Path=CmdClickOnAccept, Mode=OneTime}"/>
+                <Button Text="Cancelar" Command="{Binding Path=CmdClickOnCancel, Mode=OneTime}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

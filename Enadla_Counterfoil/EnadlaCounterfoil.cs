@@ -1,6 +1,7 @@
 ﻿using Enadla_Counterfoil.Models;
 using SQLite;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Enadla_Counterfoil
@@ -9,19 +10,26 @@ namespace Enadla_Counterfoil
     {
         private const string VERSION_COUNTERFOIL = "1.0.0";
         public const string RESTRICTED_DATA_KEYS = "version";
+        public const string DEFAULT_EXTENSION = "ecf";
 
         private SQLiteConnection counterfoilDbSourceConnection;
         private bool isBlockedInternalData = false;
+        private IEnumerable<object> lastModelsOperating;
 
         public bool IsOpen { get; private set; }
         public string SavePath
         {
             get { return this.counterfoilDbSourceConnection.DatabasePath; }
         }
+        public IEnumerable<object> LastModelsOperating => this.lastModelsOperating;
 
-        public EnadlaCounterfoil(string savePath)
+        public EnadlaCounterfoil(string savePath, bool createIfNoExist = true)
         {
             bool isCreatingNewDb = !File.Exists(savePath);
+
+            if (!createIfNoExist && isCreatingNewDb)
+                throw new Exception("the counterfoil cannot be load because it not exist and CreateIfNotExist is false");
+
             this.counterfoilDbSourceConnection = new SQLiteConnection(savePath);
 
             if (isCreatingNewDb)
@@ -31,7 +39,14 @@ namespace Enadla_Counterfoil
                 this.SetData("version", VERSION_COUNTERFOIL);
             }
 
+            this.counterfoilDbSourceConnection.TableChanged += CounterfoilDbSourceConnection_TableChanged;
+
             isBlockedInternalData = true;
+        }
+
+        private void CounterfoilDbSourceConnection_TableChanged(object sender, NotifyTableChangedEventArgs e)
+        {
+            OnChanged?.Invoke(sender, e);
         }
 
         private void CreateAllTables()
@@ -40,6 +55,7 @@ namespace Enadla_Counterfoil
             this.counterfoilDbSourceConnection.CreateTable<Product>();
             this.counterfoilDbSourceConnection.CreateTable<Sell>();
             this.counterfoilDbSourceConnection.CreateTable<IndividualSelledProduct>();
+            this.counterfoilDbSourceConnection.CreateTable<FastExpense>();
         }
 
         #region Public methods
@@ -98,6 +114,25 @@ namespace Enadla_Counterfoil
         {
             return this.counterfoilDbSourceConnection.Table<T>();
         }
+
+        public void Insert(object modelToInsert)
+        {
+            this.counterfoilDbSourceConnection.Insert(modelToInsert);
+        }
+
+        public void Update(object modelToUpdate)
+        {
+            this.counterfoilDbSourceConnection.Update(modelToUpdate);
+        }
+
+        public void Delete(object modelToDelete)
+        {
+            this.counterfoilDbSourceConnection.Delete(modelToDelete);
+        }
+        #endregion
+
+        #region events
+        public event EventHandler<NotifyTableChangedEventArgs> OnChanged;
         #endregion
 
         private class CounterfoilDictionaryTable

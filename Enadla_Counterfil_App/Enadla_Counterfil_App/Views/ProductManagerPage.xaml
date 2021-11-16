@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:SfDataGrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+             x:Class="Enadla_Counterfil_App.Views.ProductManagerPage"
+             Title="Gestionar Productos">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/> <!--Search filters row-->
+                <RowDefinition Height="1*"/> <!--List of all products-->
+                <RowDefinition Height="auto"/> <!--Actions-->
+            </Grid.RowDefinitions>
+
+            <SfDataGrid:SfDataGrid Grid.Row="1" AutoGenerateColumns="false" AllowResizingColumn="True" SelectionMode="Single" ItemsSource="{Binding Path=Products}" SelectedItem="{Binding Path=SelectedProduct, Mode=OneWayToSource}">
+                <SfDataGrid:SfDataGrid.Columns>
+                    <SfDataGrid:GridTextColumn HeaderText="ID" ColumnSizer="Auto" MappingName="ProductId"/>
+                    <SfDataGrid:GridTextColumn HeaderText="Nombre" ColumnSizer="Star" MappingName="Name"/>
+                    <SfDataGrid:GridTextColumn HeaderText="Alias" ColumnSizer="Star" MappingName="Alias"/>
+                    <SfDataGrid:GridNumericColumn HeaderText="Costo de mercado" ColumnSizer="Auto" MappingName="MarketCost" Format="c"/>
+                </SfDataGrid:SfDataGrid.Columns>
+            </SfDataGrid:SfDataGrid>
+
+            <Frame Grid.Row="2">
+                <StackLayout Orientation="Horizontal" Spacing="15">
+                    <Button Text="agregar productos" Command="{Binding Path=CmdClickOnAddProduct, Mode=OneTime}"/>
+                    <Button Text="Modificar Productos" Command="{Binding Path=CmdClickOnUpdateProduct, Mode=OneTime}"/>
+                    <Button Text="Eliminar productos" Command="{Binding Path=CmdClickOnDeleteProduct, Mode=OneTime}"/>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

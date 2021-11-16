@@ -8,28 +8,40 @@
     <ContentPage.BindingContext>
         <viewModels:MainViewModel/>
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
-        <StackLayout>
 
-            <Label FontAttributes="Bold" FontSize="32"
-                   HorizontalOptions="Center" Margin="0,25,0,0" Text="Enadla Talonario"/>
+        <ScrollView VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <Label Margin=" 0,40,0,0" HorizontalOptions="Center" 
-                Text="Ganancias del dia"/>
-            <Frame HorizontalOptions="Center" BackgroundColor="AliceBlue">
-                <Label FontSize="32" TextColor="{Binding Path=CorrectColorProfit, Mode=OneWay}"
-                       Text="{Binding Path=ProfitOfTheDay, Mode=OneWay, StringFormat='{0:C}'}"/>
-            </Frame>
-            <Button Clicked="Button_Clicked" Text="Registrar gastos rapidos"/>
-            <Button Text="Ver todos los gastos"/>
+                <StackLayout Grid.Row="0">
+                    <Label FontAttributes="Bold" FontSize="32"
+                               HorizontalOptions="Center" Margin="0,25,0,0" Text="Enadla Talonario"/>
 
-            <StackLayout VerticalOptions="CenterAndExpand">
-                <Label HorizontalOptions="Center" Text="Acciones predeterminadas"/>
-                <Button Text="Ventas"/>
-                <Button Text="Reponer"/>
-                <Button Text="Lista de compra"/>
-            </StackLayout>
-        </StackLayout>
+                    <Label Margin=" 0,20,0,0" HorizontalOptions="Center" 
+                               Text="Ganancias del dia"/>
+                    <Frame HorizontalOptions="Center" BackgroundColor="AliceBlue">
+                        <Label FontSize="32" TextColor="{Binding Path=CorrectColorProfit, Mode=OneWay}"
+                               Text="{Binding Path=ProfitOfTheDay, Mode=OneWay, StringFormat='{0:C}'}"/>
+                    </Frame>
+
+                    <Button Clicked="ClickOnAddFastExpenses" Text="Registrar gastos rapidos"/>
+                    <Button Clicked="ClickOnAllFastExpenses" Text="Ver todos los gastos"/>
+                </StackLayout>
+
+                <StackLayout Grid.Row="1" VerticalOptions="CenterAndExpand">
+                    <Label HorizontalOptions="Center" Text="Acciones predeterminadas"/>
+                    <Button Text="Ventas" Clicked="ClickOnSell"/>
+                    <Button Text="Reponer"/>
+                    <Button Text="Lista de compra"/>
+                    <Button Text="..." Clicked="ClickOnAdvanceOptions"/>
+                </StackLayout>
+
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

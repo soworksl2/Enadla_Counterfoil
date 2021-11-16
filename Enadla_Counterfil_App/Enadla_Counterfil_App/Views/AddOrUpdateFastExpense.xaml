@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModel="clr-namespace:Enadla_Counterfil_App.ViewsModels"
+             xmlns:SFNumericEntry="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
+             x:Class="Enadla_Counterfil_App.Views.AddOrUpdateFastExpense"
+             Title="{Binding Path=CorrectTitle}">
+
+    <ContentPage.Content>
+        <StackLayout Margin="25,10" HorizontalOptions="FillAndExpand">
+            <Label Text="Fecha:"/>
+            <DatePicker MinimumWidthRequest="500" HorizontalOptions="StartAndExpand" Date="{Binding Path=CurrentFastExpense.Date, Mode=TwoWay}">
+                <DatePicker.Format>
+                    dd/MM/yyyy
+                </DatePicker.Format>
+            </DatePicker>
+
+            <Label Text="Concepto:"/>
+            <Entry MaxLength="100" Text="{Binding Path=CurrentFastExpense.Concept, Mode=TwoWay}" Unfocused="OnConceptEntryUnfocused"/>
+
+            <Label Text="Monto:"/>
+            <SFNumericEntry:SfNumericTextBox FormatString="c" Value="{Binding Path=CurrentFastExpense.Amount, Mode=TwoWay}"/>
+
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Button Text="Aceptar" VerticalOptions="End" Command="{Binding Path=CmdOnAccept}"/>
+                <Button Text="Cancelar" VerticalOptions="End" Clicked="OnClickCancelBtn"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

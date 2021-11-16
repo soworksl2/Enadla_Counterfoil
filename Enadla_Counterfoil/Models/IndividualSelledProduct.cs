@@ -13,5 +13,8 @@ namespace Enadla_Counterfoil.Models
         [ForeignKey(typeof(Sell))]
         public int SellId { get; set; }
         public decimal UnitPrice { get; set; }
+
+        [ManyToOne]
+        public Product Product { get; set; }
     }
 }

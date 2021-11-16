@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Enadla_Counterfil_App.Views.SellPage"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
+             Title="Ventas">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="0" Margin="10">
+                    <Label Text="Desde:"/>
+                    <DatePicker Date="{Binding Path=FromDate, Mode=OneWayToSource}" Format="dd/MM/yyyy"/>
+                </StackLayout>
+
+                <StackLayout Grid.Column="1" Margin="10">
+                    <Label Text="Hasta:"/>
+                    <DatePicker Date="{Binding Path=ToDate, Mode=OneWayToSource}" Format="dd/MM/yyyy"/>
+                </StackLayout>
+            </Grid>
+
+            <sfDataGrid:SfDataGrid Grid.Row="1" AutoGenerateColumns="False" SelectionMode="Single" AllowResizingColumn="True" ItemsSource="{Binding Path=Sells, Mode=OneWay}">
+                <sfDataGrid:SfDataGrid.Columns>
+                    <sfDataGrid:GridDateTimeColumn HeaderText="Fecha" MappingName="Date" Format="dd/MM/yyyy" ColumnSizer="Auto"/>
+                    <sfDataGrid:GridTextColumn HeaderText="Resumen venta" MappingName="Summary" ColumnSizer="Star"/>
+                    <sfDataGrid:GridNumericColumn HeaderText="Monto total" MappingName="Total" Format="c" ColumnSizer="Auto"/>
+                </sfDataGrid:SfDataGrid.Columns>
+            </sfDataGrid:SfDataGrid>
+            
+            <Frame Grid.Row="2" HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="40">
+                    <Button Text="agregar venta" WidthRequest="150"/>
+                    <Button Text="Modificar venta" WidthRequest="150"/>
+                    <Button Text="Eliminar venta" WidthRequest="150"/>
+                </StackLayout>
+            </Frame>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

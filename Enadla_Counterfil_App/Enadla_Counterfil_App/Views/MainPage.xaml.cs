@@ -18,9 +18,24 @@ namespace Enadla_Counterfil_App.Views
             InitializeComponent();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void ClickOnAddFastExpenses(object sender, EventArgs e)
         {
-            (App.Current.MainPage as NavigationPage).PushAsync(new ExamplePage(), true);
+            (App.Current.MainPage as NavigationPage).PushAsync(new AddOrUpdateFastExpense(), true);
+        }
+
+        private void ClickOnAllFastExpenses(object sender, EventArgs e)
+        {
+            (App.Current.MainPage as NavigationPage).PushAsync(new FastExpensesPage(), true);
+        }
+
+        private void ClickOnSell(object sender, EventArgs e)
+        {
+            (App.Current.MainPage as NavigationPage).PushAsync(new SellPage(), true);
+        }
+
+        private void ClickOnAdvanceOptions(object sender, EventArgs e)
+        {
+            (App.Current.MainPage as NavigationPage).PushAsync(new AdvanceOptionsPage(), true);
         }
     }
 }
