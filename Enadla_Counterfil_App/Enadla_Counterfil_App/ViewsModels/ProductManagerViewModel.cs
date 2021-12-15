@@ -1,25 +1,44 @@
-﻿using MvvmHelpers;
-using Xamarin.Forms;
-using Enadla_Counterfil_App.Views;
-using System.Collections.ObjectModel;
+﻿using Enadla_Counterfil_App.Views;
+using Enadla_Counterfoil;
 using Enadla_Counterfoil.Models;
+using LinqKit;
+using MvvmHelpers;
 using SQLite;
 using System.Collections.Generic;
-using Enadla_Counterfoil;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Enadla_Counterfil_App.ViewsModels
 {
     public class ProductManagerViewModel : ObservableObject
     {
         private EnadlaCounterfoil currentCounterfoil;
+        private string searchFilter;
+        private bool isJustNotCheckedFilter;
         private ObservableCollection<Product> products = new ObservableCollection<Product>();
         private Product selectedProduct;
         private MvvmHelpers.Commands.Command cmdClickOnAddProduct,
-                                             cmdClickOnUpdateProduct;
+                                             cmdClickOnUpdateProduct,
+                                             cmdClickOnSearch;
         private MvvmHelpers.Commands.AsyncCommand cmdClickOnDeleteProduct;
 
+        public string SearchFilter
+        {
+            get => this.searchFilter;
+            set
+            {
+                this.searchFilter = value;
+            }
+        }
+        public bool IsJustNotCheckedFilter
+        {
+            get => this.isJustNotCheckedFilter;
+            set
+            {
+                this.isJustNotCheckedFilter = value;
+            }
+        }
         public ObservableCollection<Product> Products
         {
             get => this.products;
@@ -34,6 +53,7 @@ namespace Enadla_Counterfil_App.ViewsModels
                 this.cmdClickOnDeleteProduct.RaiseCanExecuteChanged();
             }
         }
+        public MvvmHelpers.Commands.Command CmdClickOnSearch => this.cmdClickOnSearch;
         public MvvmHelpers.Commands.Command CmdClickOnAddProduct => this.cmdClickOnAddProduct;
         public MvvmHelpers.Commands.Command CmdClickOnUpdateProduct => this.cmdClickOnUpdateProduct;
         public MvvmHelpers.Commands.AsyncCommand CmdClickOnDeleteProduct => this.cmdClickOnDeleteProduct;
@@ -43,6 +63,7 @@ namespace Enadla_Counterfil_App.ViewsModels
             this.currentCounterfoil = (App.Current as App).CurrentCounterfoil;
             this.currentCounterfoil.OnChanged += CurrentCounterfoil_OnChanged;
 
+            this.cmdClickOnSearch = new MvvmHelpers.Commands.Command(ClickOnSearch);
             this.cmdClickOnAddProduct = new MvvmHelpers.Commands.Command(ClickOnAddProduct);
             this.cmdClickOnUpdateProduct = new MvvmHelpers.Commands.Command(ClickOnUpdateProduct, CanExecuteClickOnUpdateProduct);
             this.cmdClickOnDeleteProduct = new MvvmHelpers.Commands.AsyncCommand(ClickOnDeleteProduct, CanExecuteClickOnDeleteProduct);
@@ -50,7 +71,7 @@ namespace Enadla_Counterfil_App.ViewsModels
 
         private void CurrentCounterfoil_OnChanged(object sender, NotifyTableChangedEventArgs e)
         {
-            if(e.Table.TableName != nameof(Product))
+            if (e.Table.TableName != nameof(Product))
                 return;
 
             this.LoadAllProductsByFilters();
@@ -58,12 +79,40 @@ namespace Enadla_Counterfil_App.ViewsModels
 
         public void LoadAllProductsByFilters()
         {
+            bool isAllProducts = true;
+            ExpressionStarter<Product> filter = PredicateBuilder.New<Product>(true);
+
+            if (!string.IsNullOrWhiteSpace(this.searchFilter))
+            {
+                string procesedSearchFilter = this.searchFilter.ToLower();
+                isAllProducts = false;
+                filter.And(p => p.Name.ToLower().Contains(procesedSearchFilter) || p.Alias.ToLower().Contains(procesedSearchFilter));
+            }
+            if (isJustNotCheckedFilter)
+            {
+                isAllProducts = false;
+                filter.And(p => !p.IsChecked);
+            }
+
             TableQuery<Product> productTable = (App.Current as App).CurrentCounterfoil.GetTable<Product>();
+
+            if (!isAllProducts)
+            {
+                productTable = productTable.Where(filter);
+            }
+
+            productTable = productTable.Take(100);
+
             List<Product> productsFound = productTable.ToList();
             this.SetProperty<ObservableCollection<Product>>(ref this.products, new ObservableCollection<Product>(productsFound), nameof(this.Products));
         }
 
         #region Method for commands
+
+        private void ClickOnSearch()
+        {
+            LoadAllProductsByFilters();
+        }
 
         private void ClickOnAddProduct()
         {

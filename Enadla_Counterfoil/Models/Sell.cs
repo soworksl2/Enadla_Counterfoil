@@ -24,7 +24,7 @@ namespace Enadla_Counterfoil.Models
             get
             {
                 if (this.IndividualSelledProducts == null)
-                    return "...";
+                    return "(Sin productos)";
 
                 string output = string.Empty;
                 byte includedProduct = 0;

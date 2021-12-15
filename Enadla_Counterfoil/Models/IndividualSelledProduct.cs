@@ -13,8 +13,24 @@ namespace Enadla_Counterfoil.Models
         [ForeignKey(typeof(Sell))]
         public int SellId { get; set; }
         public decimal UnitPrice { get; set; }
+        public bool IsChecked { get; set; }
 
-        [ManyToOne]
+        [ManyToOne(CascadeOperations = CascadeOperation.CascadeInsert | CascadeOperation.CascadeRead)]
         public Product Product { get; set; }
+
+        public string ProductName
+        {
+            get
+            {
+                return Product == null? string.Empty : this.Product.Name;
+            }
+        }
+        public decimal Total
+        {
+            get
+            {
+                return Quantity * UnitPrice;
+            }
+        }
     }
 }

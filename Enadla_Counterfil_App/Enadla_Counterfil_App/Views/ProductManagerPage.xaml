@@ -12,11 +12,30 @@
                 <RowDefinition Height="auto"/> <!--Actions-->
             </Grid.RowDefinitions>
 
+            <StackLayout Grid.Row="0" Padding="5">
+                <!--Search bar and button-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Entry Grid.Column="0" Text="{Binding Path=SearchFilter, Mode=OneWayToSource}"/>
+                    <Button Grid.Column="1" Text="Buscar" Command="{Binding Path=CmdClickOnSearch, Mode=OneTime}"/>
+                </Grid>
+
+                <!--CheckBox to isCheckedField and his caption-->
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox VerticalOptions="Center" IsChecked="{Binding Path=IsJustNotCheckedFilter, Mode=OneWayToSource}"/>
+                    <Label VerticalOptions="Center" Text="Mostrar solo los productos no chequeados"/>
+                </StackLayout>
+            </StackLayout>
+            
             <SfDataGrid:SfDataGrid Grid.Row="1" AutoGenerateColumns="false" AllowResizingColumn="True" SelectionMode="Single" ItemsSource="{Binding Path=Products}" SelectedItem="{Binding Path=SelectedProduct, Mode=OneWayToSource}">
                 <SfDataGrid:SfDataGrid.Columns>
                     <SfDataGrid:GridTextColumn HeaderText="ID" ColumnSizer="Auto" MappingName="ProductId"/>
                     <SfDataGrid:GridTextColumn HeaderText="Nombre" ColumnSizer="Star" MappingName="Name"/>
-                    <SfDataGrid:GridTextColumn HeaderText="Alias" ColumnSizer="Star" MappingName="Alias"/>
+                    <SfDataGrid:GridTextColumn HeaderText="Alias" ColumnSizer="Star" MappingName="InfoAndAlias"/>
                     <SfDataGrid:GridNumericColumn HeaderText="Costo de mercado" ColumnSizer="Auto" MappingName="MarketCost" Format="c"/>
                 </SfDataGrid:SfDataGrid.Columns>
             </SfDataGrid:SfDataGrid>

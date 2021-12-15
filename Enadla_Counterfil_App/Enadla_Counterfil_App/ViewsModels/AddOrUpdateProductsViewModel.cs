@@ -21,8 +21,8 @@ namespace Enadla_Counterfil_App.ViewsModels
             {
                 this.SetProperty<Product>(ref this.currentProduct, value, nameof(this.CurrentProduct));
                 this.currentProduct.PropertyChanged += (sender, e) => { 
-                    this.cmdClickOnAcceptAndContinue.RaiseCanExecuteChanged();
-                    this.cmdClickOnAccept.RaiseCanExecuteChanged();
+                    this.cmdClickOnAcceptAndContinue?.RaiseCanExecuteChanged();
+                    this.cmdClickOnAccept?.RaiseCanExecuteChanged();
                 };
                 this.cmdClickOnAcceptAndContinue?.RaiseCanExecuteChanged();
                 this.cmdClickOnAccept?.RaiseCanExecuteChanged();
@@ -38,12 +38,14 @@ namespace Enadla_Counterfil_App.ViewsModels
             if(productToEdit == null)
             {
                 this.CurrentProduct = new Product();
+                this.currentProduct.IsChecked = true;
                 this.isEditMode = false;
                 this.correctTitle = "Crear producto";
             }
             else
             {
                 this.CurrentProduct = (Product)productToEdit.Clone();
+                this.currentProduct.IsChecked = true;
                 this.isEditMode = true;
                 this.correctTitle = "editar producto";
             }
@@ -65,7 +67,10 @@ namespace Enadla_Counterfil_App.ViewsModels
         private void ClickOnAcceptAndContinue()
         {
             (App.Current as App).CurrentCounterfoil.Insert(this.currentProduct);
-            this.CurrentProduct = new Product();
+            this.CurrentProduct = new Product()
+            {
+                IsChecked = true
+            };
         }
         private bool CanExecuteClickOnAcceptAndContinue()
         {

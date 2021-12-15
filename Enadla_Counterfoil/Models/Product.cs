@@ -9,7 +9,9 @@ namespace Enadla_Counterfoil.Models
         private int productId;
         private string name,
                        alias;
-        private decimal marketCost;
+        private decimal marketCost,
+                        lastSellPrice;
+        private bool isChecked;
 
         [PrimaryKey, AutoIncrement]
         public int ProductId
@@ -39,6 +41,21 @@ namespace Enadla_Counterfoil.Models
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Alias)));
             }
         }
+        public string InfoAndAlias
+        {
+            get
+            {
+                string output = string.Empty;
+
+                if (!this.isChecked)
+                    output += "!*;";
+
+                if (!string.IsNullOrWhiteSpace(this.alias))
+                    output += this.alias;
+
+                return output;
+            }
+        }
         public decimal MarketCost
         {
             get => this.marketCost;
@@ -46,6 +63,24 @@ namespace Enadla_Counterfoil.Models
             {
                 this.marketCost = value;
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.MarketCost)));
+            }
+        }
+        public decimal LastSellPrice
+        {
+            get => this.lastSellPrice;
+            set
+            {
+                this.lastSellPrice = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.LastSellPrice)));
+            }
+        }
+        public bool IsChecked
+        {
+            get => this.isChecked;
+            set
+            {
+                this.isChecked = value;
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.IsChecked)));
             }
         }
 

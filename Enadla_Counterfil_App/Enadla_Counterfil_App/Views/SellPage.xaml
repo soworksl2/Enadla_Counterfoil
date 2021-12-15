@@ -29,7 +29,7 @@
                 </StackLayout>
             </Grid>
 
-            <sfDataGrid:SfDataGrid Grid.Row="1" AutoGenerateColumns="False" SelectionMode="Single" AllowResizingColumn="True" ItemsSource="{Binding Path=Sells, Mode=OneWay}">
+            <sfDataGrid:SfDataGrid Grid.Row="1" AutoGenerateColumns="False" SelectionMode="Single" AllowResizingColumn="True" ItemsSource="{Binding Path=Sells}" SelectedItem="{Binding Path=SelectedSell, Mode=TwoWay}">
                 <sfDataGrid:SfDataGrid.Columns>
                     <sfDataGrid:GridDateTimeColumn HeaderText="Fecha" MappingName="Date" Format="dd/MM/yyyy" ColumnSizer="Auto"/>
                     <sfDataGrid:GridTextColumn HeaderText="Resumen venta" MappingName="Summary" ColumnSizer="Star"/>
@@ -39,9 +39,9 @@
             
             <Frame Grid.Row="2" HorizontalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="40">
-                    <Button Text="agregar venta" WidthRequest="150"/>
-                    <Button Text="Modificar venta" WidthRequest="150"/>
-                    <Button Text="Eliminar venta" WidthRequest="150"/>
+                    <Button Text="agregar venta" WidthRequest="150" Command="{Binding Path=CmdClickOnAdd,Mode=OneTime}"/>
+                    <Button Text="Modificar venta" WidthRequest="150" Command="{Binding Path=CmdClickOnUpdate,Mode=OneTime}"/>
+                    <Button Text="Eliminar venta" WidthRequest="150" Command="{Binding Path=CmdClickOnDelete,Mode=OneTime}"/>
                 </StackLayout>
             </Frame>
             

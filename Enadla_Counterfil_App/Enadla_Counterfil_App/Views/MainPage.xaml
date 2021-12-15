@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Enadla_Counterfil_App.Views.MainPage"
              Title="Enadla Talonario"
-             xmlns:viewModels="clr-namespace:Enadla_Counterfil_App.ViewsModels">
+             xmlns:viewModels="clr-namespace:Enadla_Counterfil_App.ViewsModels"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms">
 
     <ContentPage.BindingContext>
         <viewModels:MainViewModel/>

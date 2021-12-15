@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Enadla_Counterfil_App.Views.AddOrUpdateSell"
+             Title="{Binding Path=CorrectTitle, Mode=OneTime}"
+             xmlns:sfComboBox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:sfNumericBox="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!--Grid to insertion-->
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--quantity-->
+                <StackLayout Grid.Column="0" Grid.Row="0" VerticalOptions="FillAndExpand">
+                    <Label Text="Cantidad"/>
+                    <sfNumericBox:SfNumericTextBox TextAlignment="End" WidthRequest="75" VerticalOptions="EndAndExpand" Value="{Binding Path=Quantity}" TabIndex="0"/>
+                </StackLayout>
+
+                <!--Product-->
+                <StackLayout Grid.Column="1" Grid.Row="0" Margin="5,0,5,0">
+                    <Label Text="Producto"/>
+                    <sfComboBox:SfComboBox IsEditableMode="True" Text="{Binding Path=NameWishedProduct}" DataSource="{Binding Path=AllProducts}" DisplayMemberPath="Name" MaximumSuggestion="4" SuggestionMode="Contains" ComboBoxMode="SuggestAppend" AllowFiltering="True" TabIndex="1" SelectAllOnFocus="True"/>
+                </StackLayout>
+                
+                <!--price-->
+                <StackLayout Grid.Column="2" Grid.Row="0" VerticalOptions="FillAndExpand">
+                    <Label Text="Precio"/>
+                    <sfNumericBox:SfNumericTextBox VerticalOptions="EndAndExpand" WidthRequest="110" FormatString="c" TextAlignment="End" TabIndex="2" Value="{Binding Path=SelectedPrice}"/>
+                </StackLayout>
+                
+                <!--insert button-->
+                <Button Grid.Column="3" Grid.Row="0" VerticalOptions="Center" Text="Insertar" Margin="10,0,0,0" TabIndex="3" Command="{Binding Path=CmdClickOnInsert, Mode=OneTime}"/>
+                
+                <!--xxxxxxxxxxxxxxxxxxxxxx-->
+                <!--Advance options-->
+                <!--xxxxxxxxxxxxxxxxxxxxxx-->
+
+                <StackLayout Grid.Row="1" Grid.Column="0">
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Path=IsAdvanceInsertion, Mode=OneWayToSource}"/>
+                        <Label Text="Insercion avanzada" VerticalOptions="Center"/>
+                    </StackLayout>
+                    
+                    <!--set's mount-->
+                    <StackLayout IsVisible="{Binding Path=IsAdvanceInsertion, Mode=OneWay}">
+                        <Label Text="Conjunto"/>
+                        <sfNumericBox:SfNumericTextBox TextAlignment="End" Value="{Binding Path=TotalSetQuantity}"/>
+                    </StackLayout>
+                </StackLayout>
+                
+                <!--extraSet-->
+                <StackLayout Grid.Row="1" Grid.Column="1" VerticalOptions="End" IsVisible="{Binding Path=IsAdvanceInsertion, Mode=OneWay}">
+                    <Label Text="extras"/>
+                    <sfNumericBox:SfNumericTextBox TextAlignment="End" Value="{Binding Path=ExtraQuantity}"/>
+                </StackLayout>
+
+                <!--type of price-->
+                <StackLayout Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" IsVisible="{Binding Path=IsAdvanceInsertion, Mode=OneWay}" Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding Path=IsUnitPrice}"/>
+                    <Label Text="Usar Precio unitario" VerticalOptions="Center"/>
+                </StackLayout>
+            </Grid>
+
+            <sfDataGrid:SfDataGrid x:Name="dgvIndividualSellProducts" ItemsSourceChanged="dgvIndividualSellProducts_ItemsSourceChanged" SelectionMode="Single" AutoGenerateColumns="False" AllowResizingColumn="True" Grid.Row="1" ItemsSource="{Binding Path=IndividualSelledProductsOfCurrentSell}" AllowPullToRefresh="True" GridLongPressed="dgvIndividualSellProducts_GridLongPressed">
+                <sfDataGrid:SfDataGrid.Columns>
+                    <sfDataGrid:GridTextColumn HeaderText="Cantidad" ColumnSizer="Auto" MappingName="Quantity"/>
+                    <sfDataGrid:GridTextColumn HeaderText="Producto" ColumnSizer="Star" MappingName="ProductName"/>
+                    <sfDataGrid:GridNumericColumn HeaderText="Precio.U" ColumnSizer="Auto" Format="c" MappingName="UnitPrice"/>
+                    <sfDataGrid:GridNumericColumn HeaderText="total" ColumnSizer="Auto" Format="c" MappingName="Total"/>
+                </sfDataGrid:SfDataGrid.Columns>
+            </sfDataGrid:SfDataGrid>
+
+            <Frame Grid.Row="2" Margin="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Total-->
+                    <StackLayout Grid.Column="0">
+                        <Label Text="Total" HorizontalOptions="Center"/>
+                        <Frame BackgroundColor="AliceBlue">
+                            <Label Text="{Binding Path=Total, StringFormat='{0:c}', Mode=OneWay}"/>
+                        </Frame>
+                    </StackLayout>
+                    <!--confirm button-->
+                    <Button Grid.Column="1" VerticalOptions="End" BackgroundColor="LimeGreen" Text="Confirmar venta" Margin="5" TextColor="White" Command="{Binding Path=CmdClickOnConfirmSell, Mode=OneTime}"/>
+                    
+                    <!--cancel button-->
+                    <Button Grid.Column="2" VerticalOptions="End" BackgroundColor="Red" Text="Cancelar" Margin="5" TextColor="White" Command="{Binding Path=CmdClickOnCancel}"/>
+
+                </Grid>
+            </Frame>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

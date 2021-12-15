@@ -64,6 +64,11 @@ namespace Enadla_Counterfoil
             this.counterfoilDbSourceConnection.Dispose();
         }
 
+        public SQLiteConnection GetConnection()
+        {
+            return this.counterfoilDbSourceConnection;
+        }
+
         public string GetData(string key)
         {
             bool existKey = this.counterfoilDbSourceConnection.Table<CounterfoilDictionaryTable>()
